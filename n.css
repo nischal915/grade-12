@@ -1,0 +1,274 @@
+/* Base Styles */
+:root {
+    --primary-color: #2c3e50;
+    --secondary-color: #3498db;
+    --accent-color: #e74c3c;
+    --light-color: #ecf0f1;
+    --dark-color: #2c3e50;
+    --text-color: #333;
+    --text-light: #7f8c8d;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    line-height: 1.6;
+    color: var(--text-color);
+    background-color: #f5f7fa;
+}
+
+.container {
+    width: 90%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 15px;
+}
+
+/* Header Styles */
+header {
+    background-color: var(--primary-color);
+    color: white;
+    padding: 2rem 0;
+    margin-bottom: 2rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+header h1 {
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.subtitle {
+    font-style: italic;
+    opacity: 0.9;
+    font-size: 1.1rem;
+}
+
+/* Navigation */
+nav {
+    background-color: var(--secondary-color);
+    margin-bottom: 2rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+nav ul {
+    display: flex;
+    list-style: none;
+    padding: 1rem 0;
+}
+
+nav li {
+    margin-right: 1.5rem;
+}
+
+nav a {
+    color: white;
+    text-decoration: none;
+    font-weight: 500;
+    transition: opacity 0.3s;
+}
+
+nav a:hover {
+    opacity: 0.8;
+    text-decoration: underline;
+}
+
+/* Main Content */
+main {
+    margin-bottom: 3rem;
+}
+
+section {
+    margin-bottom: 3rem;
+}
+
+h2 {
+    color: var(--primary-color);
+    border-bottom: 2px solid var(--secondary-color);
+    padding-bottom: 0.5rem;
+    margin: 2rem 0 1.5rem;
+    font-size: 1.8rem;
+}
+
+h3 {
+    color: var(--dark-color);
+    margin: 1.5rem 0 1rem;
+    font-size: 1.4rem;
+}
+
+h4 {
+    color: var(--primary-color);
+    margin: 1rem 0 0.5rem;
+    font-size: 1.2rem;
+}
+
+article {
+    background-color: white;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+p {
+    margin-bottom: 1rem;
+    line-height: 1.7;
+}
+
+ul {
+    margin-left: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+li {
+    margin-bottom: 0.5rem;
+}
+
+code {
+    background-color: #f0f0f0;
+    padding: 0.2rem 0.4rem;
+    border-radius: 3px;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 0.9rem;
+}
+
+/* Grid Layouts */
+.terminology-grid, .constraints, .security-measures {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
+    margin: 1.5rem 0;
+}
+
+.term, .constraint, .measure {
+    background-color: var(--light-color);
+    padding: 1rem;
+    border-radius: 5px;
+    border-left: 4px solid var(--secondary-color);
+}
+
+.normal-forms {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
+    margin: 1.5rem 0;
+}
+
+.nf {
+    background-color: #f8f9fa;
+    padding: 1rem;
+    border-radius: 5px;
+    border-top: 3px solid var(--secondary-color);
+}
+
+/* Comparison Layouts */
+.comparison, .normalization-comparison, .db-comparison {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    margin: 1.5rem 0;
+}
+
+.pros, .norm-pros, .centralized {
+    background-color: #e8f5e9;
+    padding: 1rem;
+    border-radius: 5px;
+    border-left: 4px solid #4caf50;
+}
+
+.cons, .norm-cons, .distributed {
+    background-color: #ffebee;
+    padding: 1rem;
+    border-radius: 5px;
+    border-left: 4px solid #f44336;
+}
+
+.sql-languages {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    margin: 1.5rem 0;
+}
+
+.ddl, .dml {
+    background-color: #e3f2fd;
+    padding: 1rem;
+    border-radius: 5px;
+}
+
+.data-types {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
+    margin: 1.5rem 0;
+}
+
+.type-group {
+    background-color: #f3e5f5;
+    padding: 1rem;
+    border-radius: 5px;
+}
+
+/* Footer */
+footer {
+    background-color: var(--primary-color);
+    color: white;
+    padding: 2rem 0;
+    text-align: center;
+}
+
+footer p {
+    margin-bottom: 0.5rem;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    nav ul {
+        flex-direction: column;
+    }
+    
+    nav li {
+        margin-bottom: 0.5rem;
+    }
+    
+    .comparison, .normalization-comparison, .db-comparison, .sql-languages {
+        grid-template-columns: 1fr;
+    }
+    
+    .terminology-grid, .constraints, .security-measures, .normal-forms, .data-types {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Print Styles */
+@media print {
+    body {
+        font-size: 12pt;
+        background: none;
+        color: black;
+    }
+    
+    header, footer {
+        background: none;
+        color: black;
+    }
+    
+    nav {
+        display: none;
+    }
+    
+    article {
+        page-break-inside: avoid;
+        box-shadow: none;
+        border: 1px solid #ddd;
+    }
+    
+    .comparison, .normalization-comparison, .db-comparison, .sql-languages {
+        grid-template-columns: 1fr 1fr;
+    }
+}
