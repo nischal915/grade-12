@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Functions in C</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f2f4f8;
+        }
+
+        header {
+            background-color: #0066cc;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        h1 {
+            margin: 0;
+        }
+
+        main {
+            max-width: 1000px;
+            margin: auto;
+            padding: 20px;
+        }
+
+        section {
+            background-color: white;
+            padding: 25px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h2, h3 {
+            color: #003366;
+        }
+
+        p {
+            font-size: 16px;
+        }
+
+        ul {
+            padding-left: 20px;
+        }
+
+        code {
+            display: block;
+            background-color: #f4f4f4;
+            border-left: 4px solid #0066cc;
+            padding: 15px;
+            margin: 15px 0;
+            font-family: 'Courier New', Courier, monospace;
+            white-space: pre-wrap;
+            border-radius: 4px;
+        }
+
+        img {
+            display: block;
+            margin-top: 10px;
+            border: 1px solid #ccc;
+            background-color: #fff;
+            width: 100%;
+            max-width: 500px;
+            height: 150px;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Working with Functions in C</h1>
+    </header>
+
+    <main>
+
+        <section>
+            <h2>1. Working with a Function</h2>
+            <h3>a. Define Function</h3>
+            <p>A function in C is a self-contained block of statements that perform a specific task. Functions help in breaking a program into smaller modules, which enhances code reusability, readability, and debugging.</p>
+
+            <h3>b. Syntax of Functions</h3>
+            <code>
+return_type function_name(parameter_list) {
+    // code block
+}
+            </code>
+
+            <h3>c. Types of Functions</h3>
+            <ul>
+                <li><strong>Library Functions:</strong> Predefined functions in C standard library e.g. printf(),scanf.</li>
+                <li><strong>User-defined Functions:</strong> Functions created by the programmer for specific tasks.eg sum,power</li>
+            </ul>
+
+            <h3>d. Components of a Function</h3>
+            <ul>
+                <li><strong>Function Prototype:</strong> Declaration that informs the compiler about the function’s name, return type, and parameters.</li>
+                <li><strong>Function Call:</strong> Invokes the function to execute its task.</li>
+                <li><strong>Function Definition:</strong> Contains the actual code that runs when the function is called.</li>
+                <li><strong>Return Type:</strong> Data type of the value returned by the function e.g. int,void .</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>2. Categories of Function with Example</h2>
+
+            <h3>i. Function with Return Type but No Arguments</h3>
+            <p>This function returns a value but does not receive any arguments from the calling function.</p>
+            <code>
+int getNumber() {
+    int x = 10;
+    return x;
+}
+            </code>
+
+            <h3>ii. Function with Return Type with Arguments</h3>
+            <p>Accepts input through arguments and returns a computed value.</p>
+            <code>
+int sum(int a, int b) {
+    return a + b;
+}
+            </code>
+
+            <h3>iii. Function with No Return Type with No Arguments</h3>
+            <p>Neither takes arguments nor returns a value. Used to execute code.</p>
+            <code>
+void greet() {
+    printf("Hello, World!");
+}
+            </code>
+
+            <h3>iv. Function with No Return Type with Arguments</h3>
+            <p>Takes inputs but does not return a value.</p>
+            <code>
+void printNumber(int num) {
+    printf("The number is %d", num);
+}
+            </code>
+        </section>
+
+        <section>
+            <h2>3. Storage Classes in C</h2>
+            <p>Storage classes define the scope, visibility, and lifetime of variables.</p>
+            <ul>
+                <li><strong>Automatic:</strong> Default for local variables. Lifetime is within the block.</li>
+                <li><strong>External:</strong> Declared using extern, available across files.</li>
+                <li><strong>Register:</strong> Suggests storing variable in CPU register for quick access.</li>
+                <li><strong>Static:</strong> Retains value between function calls.</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>4. Recursive Function</h2>
+            <p>A recursive function calls itself to solve smaller subproblems. Used for tasks like factorial, Fibonacci, etc.</p>
+            <code>
+#include <stdio.h>
+
+int factorial(int n) {
+    if(n == 0)
+        return 1;
+    else
+        return n * factorial(n - 1);
+}
+
+int main() {
+    int num;
+
+        printf("Enter a number to find its factorial: ");
+    scanf("%d", &num);
+
+        printf("Factorial of %d is %d\n", num, factorial(num));
+
+        printf("Statement executed by Nischal\n");
+
+    return 0;
+}
+            </code>
+            <img src="" alt="Output of Recursive Function">
+        </section>
+
+        <section>
+            <h2>5. Passing Array to a Function</h2>
+            <p>Arrays are passed using their name (which acts as a pointer to the first element).</p>
+            <code>
+#include <stdio.h>
+void printArray(int arr[], int size) {
+    for(int i = 0; i < size; i++) {
+        printf("%d ", arr[i]);
+    }
+    printf("\n");
+}
+
+int main() {
+    int numbers[] = {10, 20, 30, 40, 50};
+    int size = sizeof(numbers) / sizeof(numbers[0]);
+
+    printf("The array elements are: ");
+    printArray(numbers, size);
+    printf("Statement executed by Nischal\n");
+
+    return 0;
+}
+            </code>
+            <img src="" alt="Output of Array Function">
+        </section>
+
+        <h2>Past Questions</h2>
+
+        <section>
+            <h3>1. Define a function and write a simple example.</h3>
+            <code>
+#include &lt;stdio.h&gt;
+
+void greet() {
+    printf("Hello, welcome to C programming!");
+}
+
+int main() {
+    greet();
+printf("Statement executed by Nischal\n");
+
+    return 0;
+}
+            </code>
+            <img src="" alt="Output Placeholder">
+        </section>
+
+        <section>
+            <h3>2. To display power of given number.</h3>
+            <code>
+#include <stdio.h>
+
+int power(int base, int exponent) {
+    int result = 1;
+    for(int i = 1; i <= exponent; i++) {
+        result *= base;
+    }
+    return result;
+}
+
+int main() {
+    int base, exponent, result;
+
+    printf("Enter base: ");
+    scanf("%d", &base);
+    printf("Enter exponent: ");
+    scanf("%d", &exponent);
+
+    result = power(base, exponent);
+
+    printf("%d raised to the power %d is %d\n", base, exponent, result);
+    printf("Program executed by Nischal\n");
+
+    return 0;
+}
+</code>
+ <img src="" alt="Output Placeholder">
+
+        </section>
+
+        <section>
+            <h3>3.To generate fibonacci series.</h3>
+            <code>
+#include <stdio.h>
+
+void generateFibonacci(int n) {
+    int a = 0, b = 1, next;
+    for(int i = 0; i < n; i++) {
+        printf("%d ", a);
+        next = a + b;
+        a = b;
+        b = next;
+    }
+    printf("\n");
+}
+
+int main() {
+    int n;
+
+    printf("Enter number of terms: ");
+    scanf("%d", &n);
+
+    generateFibonacci(n);
+
+    printf("Program executed by Nischal\n");
+
+    return 0;
+}
+            </code>
+            <img src="" alt="Output Placeholder">
+        </section>
+
+        <section>
+            <h3>4. To perform matrix multiplication.</h3>
+            <code>
+#include <stdio.h>
+
+void multiplyMatrices(int a[10][10], int b[10][10], int result[10][10], int r1, int c1, int c2) {
+    for(int i = 0; i < r1; i++) {
+        for(int j = 0; j < c2; j++) {
+            result[i][j] = 0;
+            for(int k = 0; k < c1; k++) {
+                result[i][j] += a[i][k] * b[k][j];
+            }
+        }
+    }
+}
+
+int main() {
+    int a[10][10], b[10][10], result[10][10];
+    int r1, c1, r2, c2;
+
+    printf("Enter rows and columns of first matrix: ");
+    scanf("%d %d", &r1, &c1);
+
+    printf("Enter rows and columns of second matrix: ");
+    scanf("%d %d", &r2, &c2);
+
+    if(c1 != r2) {
+        printf("Matrix multiplication not possible\n");
+        return 0;
+    }
+
+    printf("Enter elements of first matrix:\n");
+    for(int i = 0; i < r1; i++)
+        for(int j = 0; j < c1; j++)
+            scanf("%d", &a[i][j]);
+
+    printf("Enter elements of second matrix:\n");
+    for(int i = 0; i < r2; i++)
+        for(int j = 0; j < c2; j++)
+            scanf("%d", &b[i][j]);
+
+    multiplyMatrices(a, b, result, r1, c1, c2);
+
+    printf("Resultant matrix:\n");
+    for(int i = 0; i < r1; i++) {
+        for(int j = 0; j < c2; j++) {
+            printf("%d ", result[i][j]);
+        }
+        printf("\n");
+    }
+
+    printf("Program executed by Nischal\n");
+
+    return 0;
+}
+            </code>
+            <img src="" alt="Output Placeholder">
+        </section>
+
+        <section>
+            <h3>5. To display sum of first 5 integers.</h3>
+            <code>
+#include <stdio.h>
+
+int sumFirstFive() {
+    int sum = 0;
+    for(int i = 1; i <= 5; i++) {
+        sum += i;
+    }
+    return sum;
+}
+
+int main() {
+    int result = sumFirstFive();
+    printf("Sum of first 5 integers is %d\n", result);
+    printf("Program executed by Nischal\n");
+    return 0;
+}
+
+            </code>
+            <img src="" alt="Output Placeholder">
+        </section>
+
+            </main>
+</body>
+</html>
