@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Functions in C</title>
+    <title>Complete C Programming Guide</title>
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -10,24 +10,20 @@
             padding: 0;
             background-color: #f2f4f8;
         }
-
         header {
             background-color: #0066cc;
             color: white;
             padding: 20px;
             text-align: center;
         }
-
         h1 {
             margin: 0;
         }
-
         main {
             max-width: 1000px;
             margin: auto;
             padding: 20px;
         }
-
         section {
             background-color: white;
             padding: 25px;
@@ -35,19 +31,15 @@
             border-radius: 8px;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
         }
-
         h2, h3 {
             color: #003366;
         }
-
         p {
             font-size: 16px;
         }
-
         ul {
             padding-left: 20px;
         }
-
         code {
             display: block;
             background-color: #f4f4f4;
@@ -58,7 +50,6 @@
             white-space: pre-wrap;
             border-radius: 4px;
         }
-
         img {
             display: block;
             margin-top: 10px;
@@ -71,119 +62,98 @@
     </style>
 </head>
 <body>
-
     <header>
-        <h1>Working with Functions in C</h1>
+        <h1>Complete C Programming Guide</h1>
     </header>
-
     <main>
-
+        <!-- Functions Section -->
         <section>
-            <h2>1. Working with a Function</h2>
-            <h3>a. Define Function</h3>
+            <h2>1. Working with Functions</h2>
+            <h3>a. Introduction and Syntax</h3>
             <p>A function in C is a self-contained block of statements that perform a specific task. Functions help in breaking a program into smaller modules, which enhances code reusability, readability, and debugging.</p>
-
-            <h3>b. Syntax of Functions</h3>
             <code>
 return_type function_name(parameter_list) {
     // code block
 }
             </code>
-
-            <h3>c. Types of Functions</h3>
+            
+            <h3>b. Purpose and Advantages</h3>
             <ul>
-                <li><strong>Library Functions:</strong> Predefined functions in C standard library e.g. printf(),scanf.</li>
-                <li><strong>User-defined Functions:</strong> Functions created by the programmer for specific tasks.eg sum,power</li>
+                <li>Modular programming approach</li>
+                <li>Code reusability</li>
+                <li>Easier debugging and testing</li>
+                <li>Reduces code duplication</li>
             </ul>
-
-            <h3>d. Components of a Function</h3>
+            
+            <h3>c. Components of a Function</h3>
             <ul>
-                <li><strong>Function Prototype:</strong> Declaration that informs the compiler about the function’s name, return type, and parameters.</li>
-                <li><strong>Function Call:</strong> Invokes the function to execute its task.</li>
+                <li><strong>Function Prototype:</strong> Declaration that informs the compiler about the function's name, return type, and parameters.</li>
                 <li><strong>Function Definition:</strong> Contains the actual code that runs when the function is called.</li>
-                <li><strong>Return Type:</strong> Data type of the value returned by the function e.g. int,void .</li>
+                <li><strong>Function Call:</strong> Invokes the function to execute its task.</li>
+                <li><strong>Return Statement:</strong> Returns a value from the function.</li>
             </ul>
-        </section>
-
-        <section>
-            <h2>2. Categories of Function with Example</h2>
-
-            <h3>i. Function with Return Type but No Arguments</h3>
-            <p>This function returns a value but does not receive any arguments from the calling function.</p>
-            <code>
-int getNumber() {
-    int x = 10;
-    return x;
-}
-            </code>
-
-            <h3>ii. Function with Return Type with Arguments</h3>
-            <p>Accepts input through arguments and returns a computed value.</p>
-            <code>
-int sum(int a, int b) {
-    return a + b;
-}
-            </code>
-
-            <h3>iii. Function with No Return Type with No Arguments</h3>
-            <p>Neither takes arguments nor returns a value. Used to execute code.</p>
-            <code>
-void greet() {
-    printf("Hello, World!");
-}
-            </code>
-
-            <h3>iv. Function with No Return Type with Arguments</h3>
-            <p>Takes inputs but does not return a value.</p>
-            <code>
-void printNumber(int num) {
-    printf("The number is %d", num);
-}
-            </code>
-        </section>
-
-        <section>
-            <h2>3. Storage Classes in C</h2>
-            <p>Storage classes define the scope, visibility, and lifetime of variables.</p>
+            
+            <h3>d. Types of Functions</h3>
             <ul>
-                <li><strong>Automatic:</strong> Default for local variables. Lifetime is within the block.</li>
-                <li><strong>External:</strong> Declared using extern, available across files.</li>
-                <li><strong>Register:</strong> Suggests storing variable in CPU register for quick access.</li>
-                <li><strong>Static:</strong> Retains value between function calls.</li>
+                <li><strong>Library Functions:</strong> Predefined functions in C standard library e.g. printf(), scanf().</li>
+                <li><strong>User-defined Functions:</strong> Functions created by the programmer for specific tasks.</li>
             </ul>
-        </section>
-
-        <section>
-            <h2>4. Recursive Function</h2>
-            <p>A recursive function calls itself to solve smaller subproblems. Used for tasks like factorial, Fibonacci, etc.</p>
+            
+            <h3>e. Passing Arguments</h3>
+            <h4>Call By Value</h4>
+            <p>In call by value, a copy of the actual parameter is passed to the function. Changes made to the parameter inside the function don't affect the original value.</p>
             <code>
 #include <stdio.h>
-
-int factorial(int n) {
-    if(n == 0)
-        return 1;
-    else
-        return n * factorial(n - 1);
+void swapByValue(int a, int b) {
+    int temp = a;
+    a = b;
+    b = temp;
+    printf("Inside function: a = %d, b = %d\n", a, b);
 }
-
 int main() {
-    int num;
-
-        printf("Enter a number to find its factorial: ");
-    scanf("%d", &num);
-
-        printf("Factorial of %d is %d\n", num, factorial(num));
-
-        printf("Statement executed by Nischal\n");
-
+    int x = 5, y = 10;
+    swapByValue(x, y);
+    printf("After swap: x = %d, y = %d\n", x, y);
     return 0;
 }
             </code>
-            <img src="1.png" alt="Output of Recursive Function">
+            
+            <h4>Call By Reference</h4>
+            <p>In call by reference, the address of the variable is passed to the function. Changes made to the parameter affect the original value.</p>
+            <code>
+#include <stdio.h>
+void swapByReference(int *a, int *b) {
+    int temp = *a;
+    *a = *b;
+    *b = temp;
+    printf("Inside function: a = %d, b = %d\n", *a, *b);
+}
+int main() {
+    int x = 5, y = 10;
+    swapByReference(&x, &y);
+    printf("After swap: x = %d, y = %d\n", x, y);
+    return 0;
+}
+            </code>
+            
+            <h3>f. Variable and its Scope</h3>
+            <ul>
+                <li><strong>Local Variables:</strong> Declared inside a function or block. Accessible only within that function or block.</li>
+                <li><strong>Global Variables:</strong> Declared outside all functions. Accessible from any function in the program.</li>
+            </ul>
+            
+            <h3>g. Storage Classes</h3>
+            <ul>
+                <li><strong>Automatic:</strong> Default for local variables. Lifetime is within the block.</li>
+                <li><strong>External:</strong> Declared using extern, available across files.</li>
+                <li><strong>Static:</strong> Retains value between function calls.</li>
+                <li><strong>Register:</strong> Suggests storing variable in CPU register for quick access.</li>
+            </ul>
         </section>
-
+        
+        <!-- Function with Array Section -->
         <section>
-            <h2>5. Passing Array to a Function</h2>
+            <h2>2. Function with Array</h2>
             <p>Arrays are passed using their name (which acts as a pointer to the first element).</p>
             <code>
 #include <stdio.h>
@@ -193,47 +163,442 @@ void printArray(int arr[], int size) {
     }
     printf("\n");
 }
-
 int main() {
     int numbers[] = {10, 20, 30, 40, 50};
     int size = sizeof(numbers) / sizeof(numbers[0]);
-
     printf("The array elements are: ");
     printArray(numbers, size);
-    printf("Statement executed by Nischal\n");
-
     return 0;
 }
             </code>
             <img src="2.png" alt="Output of Array Function">
         </section>
-
+        
+        <!-- Recursive Function Section -->
+        <section>
+            <h2>3. Recursive Function</h2>
+            <p>A recursive function calls itself to solve smaller subproblems. Used for tasks like factorial, Fibonacci, etc.</p>
+            <code>
+#include <stdio.h>
+int factorial(int n) {
+    if(n == 0)
+        return 1;
+    else
+        return n * factorial(n - 1);
+}
+int main() {
+    int num;
+    printf("Enter a number to find its factorial: ");
+    scanf("%d", &num);
+    printf("Factorial of %d is %d\n", num, factorial(num));
+    return 0;
+}
+            </code>
+            <img src="1.png" alt="Output of Recursive Function">
+            
+            <h3>Advantages of Recursion</h3>
+            <ul>
+                <li>Elegant solution for problems with recursive nature</li>
+                <li>Reduces code length for certain problems</li>
+                <li>Easier to implement for problems like tree traversals</li>
+            </ul>
+            
+            <h3>Disadvantages of Recursion</h3>
+            <ul>
+                <li>Uses more memory than iterative solutions</li>
+                <li>Can cause stack overflow for deep recursion</li>
+                <li>Generally slower than iterative solutions</li>
+            </ul>
+        </section>
+        
+        <!-- Structure Section -->
+        <section>
+            <h2>4. Structure and Union</h2>
+            <h3>a. Structure: Introduction and Syntax</h3>
+            <p>A structure is a user-defined data type that groups related variables of different data types.</p>
+            <code>
+struct structure_name {
+    data_type member1;
+    data_type member2;
+    // ...
+};
+            </code>
+            
+            <h3>b. Structure Size</h3>
+            <p>The size of a structure is the sum of sizes of all its members, plus any padding added by the compiler for alignment.</p>
+            
+            <h3>c. Accessing Members of Structure</h3>
+            <code>
+#include <stdio.h>
+struct Student {
+    int id;
+    char name[50];
+    float percentage;
+};
+int main() {
+    struct Student s1;
+    s1.id = 101;
+    strcpy(s1.name, "John Doe");
+    s1.percentage = 85.5;
+    
+    printf("Student ID: %d\n", s1.id);
+    printf("Student Name: %s\n", s1.name);
+    printf("Percentage: %.2f\n", s1.percentage);
+    
+    return 0;
+}
+            </code>
+            
+            <h3>d. Nested Structure</h3>
+            <code>
+#include <stdio.h>
+struct Address {
+    char city[50];
+    char state[50];
+};
+struct Employee {
+    int id;
+    char name[50];
+    struct Address addr;
+};
+int main() {
+    struct Employee emp = {101, "John Smith", {"New York", "NY"}};
+    
+    printf("Employee ID: %d\n", emp.id);
+    printf("Employee Name: %s\n", emp.name);
+    printf("City: %s\n", emp.addr.city);
+    printf("State: %s\n", emp.addr.state);
+    
+    return 0;
+}
+            </code>
+            
+            <h3>e. Array of Structure</h3>
+            <code>
+#include <stdio.h>
+struct Student {
+    int id;
+    char name[50];
+    float marks;
+};
+int main() {
+    struct Student students[3];
+    
+    for(int i = 0; i < 3; i++) {
+        printf("Enter details for student %d:\n", i+1);
+        printf("ID: ");
+        scanf("%d", &students[i].id);
+        printf("Name: ");
+        scanf("%s", students[i].name);
+        printf("Marks: ");
+        scanf("%f", &students[i].marks);
+    }
+    
+    printf("\nStudent Details:\n");
+    for(int i = 0; i < 3; i++) {
+        printf("ID: %d, Name: %s, Marks: %.2f\n", 
+               students[i].id, students[i].name, students[i].marks);
+    }
+    
+    return 0;
+}
+            </code>
+            
+            <h3>f. Passing Structure to Function</h3>
+            <code>
+#include <stdio.h>
+struct Point {
+    int x;
+    int y;
+};
+void printPoint(struct Point p) {
+    printf("Point coordinates: (%d, %d)\n", p.x, p.y);
+}
+int main() {
+    struct Point p1 = {5, 10};
+    printPoint(p1);
+    return 0;
+}
+            </code>
+            
+            <h3>g. Union: Introduction and Syntax</h3>
+            <p>A union is similar to a structure but all members share the same memory location.</p>
+            <code>
+union union_name {
+    data_type member1;
+    data_type member2;
+    // ...
+};
+            </code>
+            
+            <h3>h. Comparison between Structure and Union</h3>
+            <ul>
+                <li><strong>Memory:</strong> Structure allocates memory for all members, union allocates memory for the largest member</li>
+                <li><strong>Access:</strong> In structure, all members can be accessed at any time, in union only one member can be accessed at a time</li>
+                <li><strong>Size:</strong> Structure size is sum of all members (plus padding), union size is size of largest member</li>
+            </ul>
+        </section>
+        
+        <!-- Pointers Section -->
+        <section>
+            <h2>5. Pointers</h2>
+            <h3>a. Introduction and Syntax</h3>
+            <p>A pointer is a variable that stores the memory address of another variable.</p>
+            <code>
+data_type *pointer_name;
+            </code>
+            
+            <h3>b. Usage and Working</h3>
+            <p>Pointers are used for dynamic memory allocation, array handling, and implementing data structures.</p>
+            
+            <h3>c. Concept of Value and Address</h3>
+            <p>The '&' operator returns the address of a variable, and the '*' operator accesses the value at a pointer address.</p>
+            
+            <h3>d. Declaration and Initialization</h3>
+            <code>
+int x = 10;
+int *ptr = &x;  // ptr now points to x
+            </code>
+            
+            <h3>e. Pointer and Function</h3>
+            <code>
+#include <stdio.h>
+void increment(int *p) {
+    (*p)++;
+}
+int main() {
+    int num = 5;
+    printf("Before increment: %d\n", num);
+    increment(&num);
+    printf("After increment: %d\n", num);
+    return 0;
+}
+            </code>
+            
+            <h3>f. Call by Reference with Pointers</h3>
+            <code>
+#include <stdio.h>
+void swap(int *a, int *b) {
+    int temp = *a;
+    *a = *b;
+    *b = temp;
+}
+int main() {
+    int x = 5, y = 10;
+    printf("Before swap: x = %d, y = %d\n", x, y);
+    swap(&x, &y);
+    printf("After swap: x = %d, y = %d\n", x, y);
+    return 0;
+}
+            </code>
+            
+            <h3>g. Comparison between Call by Value and Call by Reference</h3>
+            <ul>
+                <li><strong>Call by Value:</strong> Copies actual parameters, changes not reflected outside function</li>
+                <li><strong>Call by Reference:</strong> Uses addresses, changes reflected outside function</li>
+            </ul>
+            
+            <h3>h. Pointer with Arrays</h3>
+            <code>
+#include <stdio.h>
+int main() {
+    int arr[] = {10, 20, 30, 40, 50};
+    int *ptr = arr;  // points to first element
+    
+    for(int i = 0; i < 5; i++) {
+        printf("Element %d: %d\n", i, *(ptr + i));
+    }
+    
+    return 0;
+}
+            </code>
+            
+            <h3>i. Advantages and Disadvantages of Pointers</h3>
+            <p><strong>Advantages:</strong></p>
+            <ul>
+                <li>Efficient handling of arrays and strings</li>
+                <li>Dynamic memory allocation</li>
+                <li>Implementing data structures like linked lists, trees, etc.</li>
+                <li>Function can return multiple values</li>
+            </ul>
+            
+            <p><strong>Disadvantages:</strong></p>
+            <ul>
+                <li>Complex to understand and use</li>
+                <li>Can cause segmentation faults if not handled properly</li>
+                <li>Memory leaks if dynamically allocated memory not freed</li>
+            </ul>
+        </section>
+        
+        <!-- File Handling Section -->
+        <section>
+            <h2>6. File Handling</h2>
+            <h3>a. Concept of Data File</h3>
+            <p>A data file is a collection of related records stored on a secondary storage device.</p>
+            
+            <h3>b. Need for File Handling in C</h3>
+            <ul>
+                <li>Permanent storage of data</li>
+                <li>Handling large volumes of data</li>
+                <li>Data sharing between programs</li>
+            </ul>
+            
+            <h3>c. Sequential and Random Files</h3>
+            <ul>
+                <li><strong>Sequential Files:</strong> Data is accessed in a sequential manner</li>
+                <li><strong>Random Files:</strong> Data can be accessed directly at any position</li>
+            </ul>
+            
+            <h3>d. File Handling Functions</h3>
+            <ul>
+                <li><strong>fopen():</strong> Opens a file
+                    <code>FILE *fopen(const char *filename, const char *mode);</code>
+                </li>
+                <li><strong>fclose():</strong> Closes a file
+                    <code>int fclose(FILE *stream);</code>
+                </li>
+                <li><strong>getc():</strong> Reads a character from file
+                    <code>int getc(FILE *stream);</code>
+                </li>
+                <li><strong>putc():</strong> Writes a character to file
+                    <code>int putc(int char, FILE *stream);</code>
+                </li>
+                <li><strong>fprintf():</strong> Writes formatted output to file
+                    <code>int fprintf(FILE *stream, const char *format, ...);</code>
+                </li>
+                <li><strong>fscanf():</strong> Reads formatted input from file
+                    <code>int fscanf(FILE *stream, const char *format, ...);</code>
+                </li>
+                <li><strong>getw():</strong> Reads an integer from file
+                    <code>int getw(FILE *stream);</code>
+                </li>
+                <li><strong>putw():</strong> Writes an integer to file
+                    <code>int putw(int num, FILE *stream);</code>
+                </li>
+                <li><strong>fgets():</strong> Reads a string from file
+                    <code>char *fgets(char *str, int n, FILE *stream);</code>
+                </li>
+                <li><strong>fputs():</strong> Writes a string to file
+                    <code>int fputs(const char *str, FILE *stream);</code>
+                </li>
+                <li><strong>fread():</strong> Reads data from file
+                    <code>size_t fread(void *ptr, size_t size, size_t nmemb, FILE *stream);</code>
+                </li>
+                <li><strong>fwrite():</strong> Writes data to file
+                    <code>size_t fwrite(const void *ptr, size_t size, size_t nmemb, FILE *stream);</code>
+                </li>
+                <li><strong>remove():</strong> Deletes a file
+                    <code>int remove(const char *filename);</code>
+                </li>
+                <li><strong>rename():</strong> Renames a file
+                    <code>int rename(const char *oldname, const char *newname);</code>
+                </li>
+            </ul>
+            
+            <h3>e. Random Access Functions</h3>
+            <ul>
+                <li><strong>fseek():</strong> Sets file position indicator
+                    <code>int fseek(FILE *stream, long int offset, int whence);</code>
+                </li>
+                <li><strong>rewind():</strong> Sets file position to beginning
+                    <code>void rewind(FILE *stream);</code>
+                </li>
+                <li><strong>ftell():</strong> Returns current file position
+                    <code>long int ftell(FILE *stream);</code>
+                </li>
+            </ul>
+            
+            <h3>f. File Opening Modes</h3>
+            <ul>
+                <li><strong>Read (r, r+):</strong> Opens file for reading</li>
+                <li><strong>Write (w, w+):</strong> Opens file for writing (creates new or truncates existing)</li>
+                <li><strong>Append (a, a+):</strong> Opens file for appending (creates new if doesn't exist)</li>
+            </ul>
+            
+            <h3>g. Steps to Work with File in C</h3>
+            <ol>
+                <li>Define a file pointer: <code>FILE *fp;</code></li>
+                <li>Open file with required mode: <code>fp = fopen("filename.txt", "mode");</code></li>
+                <li>Perform read, write, or append operations</li>
+                <li>Close the file: <code>fclose(fp);</code></li>
+            </ol>
+            
+            <h3>h. Reading Data from Files</h3>
+            <code>
+#include <stdio.h>
+int main() {
+    FILE *fp;
+    char ch;
+    fp = fopen("file.txt", "r");
+    if(fp == NULL) {
+        printf("File cannot be opened");
+        return 1;
+    }
+    while((ch = getc(fp)) != EOF) {
+        printf("%c", ch);
+    }
+    fclose(fp);
+    return 0;
+}
+            </code>
+            
+            <h3>i. Writing Data on Files</h3>
+            <code>
+#include <stdio.h>
+int main() {
+    FILE *fp;
+    fp = fopen("file.txt", "w");
+    if(fp == NULL) {
+        printf("File cannot be opened");
+        return 1;
+    }
+    fprintf(fp, "Hello, World!\n");
+    fclose(fp);
+    return 0;
+}
+            </code>
+            
+            <h3>j. Appending Data Files</h3>
+            <code>
+#include <stdio.h>
+int main() {
+    FILE *fp;
+    fp = fopen("file.txt", "a");
+    if(fp == NULL) {
+        printf("File cannot be opened");
+        return 1;
+    }
+    fprintf(fp, "This is appended text.\n");
+    fclose(fp);
+    return 0;
+}
+            </code>
+            
+            <h3>k. End of File (EOF)</h3>
+            <p>EOF is a constant defined in stdio.h that indicates the end of a file. It's typically used to check when reading from a file should stop.</p>
+        </section>
+        
+        <!-- Past Questions Section -->
         <h2>Past Questions</h2>
-
         <section>
             <h3>1. Define a function and write a simple example.</h3>
             <code>
-#include &lt;stdio.h&gt;
-
+#include <stdio.h>
 void greet() {
     printf("Hello, welcome to C programming!");
 }
-
 int main() {
     greet();
-printf("Statement executed by Nischal\n");
-
     return 0;
 }
             </code>
             <img src="3.png" alt="Output Placeholder">
         </section>
-
+        
         <section>
             <h3>2. To display power of given number.</h3>
             <code>
 #include <stdio.h>
-
 int power(int base, int exponent) {
     int result = 1;
     for(int i = 1; i <= exponent; i++) {
@@ -241,32 +606,24 @@ int power(int base, int exponent) {
     }
     return result;
 }
-
 int main() {
     int base, exponent, result;
-
     printf("Enter base: ");
     scanf("%d", &base);
     printf("Enter exponent: ");
     scanf("%d", &exponent);
-
     result = power(base, exponent);
-
     printf("%d raised to the power %d is %d\n", base, exponent, result);
-    printf("Program executed by Nischal\n");
-
     return 0;
 }
-</code>
- <img src="4.png" alt="Output Placeholder">
-
+            </code>
+            <img src="4.png" alt="Output Placeholder">
         </section>
-
+        
         <section>
-            <h3>3.To generate fibonacci series.</h3>
+            <h3>3. To generate fibonacci series.</h3>
             <code>
 #include <stdio.h>
-
 void generateFibonacci(int n) {
     int a = 0, b = 1, next;
     for(int i = 0; i < n; i++) {
@@ -277,28 +634,21 @@ void generateFibonacci(int n) {
     }
     printf("\n");
 }
-
 int main() {
     int n;
-
     printf("Enter number of terms: ");
     scanf("%d", &n);
-
     generateFibonacci(n);
-
-    printf("Program executed by Nischal\n");
-
     return 0;
 }
             </code>
             <img src="5.png" alt="Output Placeholder">
         </section>
-
+        
         <section>
             <h3>4. To perform matrix multiplication.</h3>
             <code>
 #include <stdio.h>
-
 void multiplyMatrices(int a[10][10], int b[10][10], int result[10][10], int r1, int c1, int c2) {
     for(int i = 0; i < r1; i++) {
         for(int j = 0; j < c2; j++) {
@@ -309,34 +659,26 @@ void multiplyMatrices(int a[10][10], int b[10][10], int result[10][10], int r1, 
         }
     }
 }
-
 int main() {
     int a[10][10], b[10][10], result[10][10];
     int r1, c1, r2, c2;
-
     printf("Enter rows and columns of first matrix: ");
     scanf("%d %d", &r1, &c1);
-
     printf("Enter rows and columns of second matrix: ");
     scanf("%d %d", &r2, &c2);
-
     if(c1 != r2) {
         printf("Matrix multiplication not possible\n");
         return 0;
     }
-
     printf("Enter elements of first matrix:\n");
     for(int i = 0; i < r1; i++)
         for(int j = 0; j < c1; j++)
             scanf("%d", &a[i][j]);
-
     printf("Enter elements of second matrix:\n");
     for(int i = 0; i < r2; i++)
         for(int j = 0; j < c2; j++)
             scanf("%d", &b[i][j]);
-
     multiplyMatrices(a, b, result, r1, c1, c2);
-
     printf("Resultant matrix:\n");
     for(int i = 0; i < r1; i++) {
         for(int j = 0; j < c2; j++) {
@@ -344,20 +686,16 @@ int main() {
         }
         printf("\n");
     }
-
-    printf("Program executed by Nischal\n");
-
     return 0;
 }
             </code>
             <img src="6.png" alt="Output Placeholder">
         </section>
-
+        
         <section>
             <h3>5. To display sum of first 5 integers.</h3>
             <code>
 #include <stdio.h>
-
 int sumFirstFive() {
     int sum = 0;
     for(int i = 1; i <= 5; i++) {
@@ -365,18 +703,14 @@ int sumFirstFive() {
     }
     return sum;
 }
-
 int main() {
     int result = sumFirstFive();
     printf("Sum of first 5 integers is %d\n", result);
-    printf("Program executed by Nischal\n");
     return 0;
 }
-
             </code>
             <img src="7.png" alt="Output Placeholder">
         </section>
-
-            </main>
+    </main>
 </body>
 </html>
