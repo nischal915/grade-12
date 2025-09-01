@@ -1,620 +1,1116 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Database Management System Guide</title>
-    <link rel="stylesheet" href="n.css">
+    <title>Database Concepts Book</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f5f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .book {
+            width: 90%;
+            max-width: 1000px;
+            height: 700px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+            display: flex;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .book-cover {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #2c3e50, #1a2530);
+            color: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 10;
+            transition: transform 1s ease;
+            transform-origin: left;
+            padding: 20px;
+            text-align: center;
+        }
+        
+        .book-cover h1 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+        
+        .book-cover p {
+            font-size: 1.2rem;
+            max-width: 80%;
+            line-height: 1.6;
+        }
+        
+        .book-cover.open {
+            transform: rotateY(180deg);
+            opacity: 0;
+            pointer-events: none;
+        }
+        
+        .pages {
+            display: flex;
+            width: 100%;
+            height: 100%;
+        }
+        
+        .sidebar {
+            width: 250px;
+            background-color: #2c3e50;
+            color: white;
+            padding: 20px;
+            overflow-y: auto;
+        }
+        
+        .sidebar h2 {
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .topics-list {
+            list-style: none;
+        }
+        
+        .topics-list li {
+            margin-bottom: 10px;
+            padding: 8px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .topics-list li:hover {
+            background-color: #34495e;
+        }
+        
+        .topics-list li.active {
+            background-color: #3498db;
+            font-weight: bold;
+        }
+        
+        .content {
+            flex: 1;
+            padding: 30px;
+            overflow-y: auto;
+            position: relative;
+        }
+        
+        .page {
+            display: none;
+        }
+        
+        .page.active {
+            display: block;
+            animation: fadeIn 0.5s;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        h1 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #3498db;
+        }
+        
+        h2 {
+            color: #3498db;
+            margin: 15px 0 10px;
+        }
+        
+        h3 {
+            color: #2c3e50;
+            margin: 12px 0 8px;
+        }
+        
+        p {
+            margin-bottom: 15px;
+            line-height: 1.6;
+        }
+        
+        ul, ol {
+            margin-left: 20px;
+            margin-bottom: 15px;
+        }
+        
+        li {
+            margin-bottom: 8px;
+        }
+        
+        .definition {
+            background-color: #f8f9fa;
+            border-left: 4px solid #3498db;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 0 5px 5px 0;
+        }
+        
+        .nav-buttons {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            display: flex;
+            gap: 10px;
+        }
+        
+        button {
+            padding: 8px 15px;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        button:hover {
+            background-color: #2980b9;
+        }
+        
+        .diagram {
+            text-align: center;
+            margin: 20px 0;
+            padding: 10px;
+            background-color: #f8f9fa;
+            border-radius: 5px;
+        }
+        
+        .diagram-placeholder {
+            width: 100%;
+            height: 200px;
+            background-color: #e9ecef;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 5px;
+            margin-bottom: 10px;
+            color: #6c757d;
+        }
+        
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+        
+        .table th, .table td {
+            border: 1px solid #dee2e6;
+            padding: 10px;
+            text-align: left;
+        }
+        
+        .table th {
+            background-color: #3498db;
+            color: white;
+        }
+        
+        .table tr:nth-child(even) {
+            background-color: #f8f9fa;
+        }
+        
+        code {
+            background-color: #f8f9fa;
+            padding: 2px 5px;
+            border-radius: 3px;
+            font-family: monospace;
+        }
+        
+        .question {
+            background-color: #e8f4fc;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 15px;
+            border-left: 4px solid #3498db;
+        }
+        
+        .answer {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+        
+        pre {
+            background-color: #f0f0f0;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            margin: 10px 0;
+        }
+        
+        .sql-keyword {
+            color: #000080;
+            font-weight: bold;
+        }
+        
+        .sql-comment {
+            color: #008000;
+        }
+    </style>
 </head>
 <body>
-    <header>
-        <div class="container">
-            <h1>Database Management System</h1>
-            <p class="subtitle">A comprehensive guide to database concepts and technologies</p>
+    <div class="book">
+        <div class="book-cover" id="bookCover">
+            <h1>Database Concepts</h1>
+            <p>A comprehensive guide to database fundamentals, design, and implementation</p>
+            <p>Click anywhere to open the book</p>
         </div>
-    </header>
-
-    <nav>
-        <div class="container">
-            <ul>
-                <li><a href="#fundamentals">Fundamentals</a></li>
-                <li><a href="#models">Database Models</a></li>
-                <li><a href="#design">Database Design</a></li>
-                <li><a href="#security">Database Security</a></li>
-                <li><a href="#practical">Practical Topics</a></li>
-<li><a href="#past">Past Questions</a></li>
-
-            </ul>
-        </div>
-    </nav>
-
-    <main class="container">
-        <section id="fundamentals">
-            <h2>Database Fundamentals</h2>
-            
-            <article>
-                <h3>Data vs Information</h3>
-                <p><strong>Data</strong> refers to raw, unorganized facts that need to be processed. Data can be simple and unorganized until it is organized and given context.</p>
-                <p><strong>Information</strong> is processed, organized, and structured data that provides context and enables decision making. For example, customer names and purchase amounts are data, but a sales report analyzing trends is information.</p>
-            </article>
-            
-            <article>
-                <h3>Features of Quality Information</h3>
-                <ul>
-                    <li><strong>Accuracy:</strong> Information should be error-free and precise</li>
-                    <li><strong>Completeness:</strong> All necessary data should be present</li>
-                    <li><strong>Consistency:</strong> Information shouldn't contradict other data</li>
-                    <li><strong>Timeliness:</strong> Information should be available when needed</li>
-                    <li><strong>Relevance:</strong> Information should be applicable to current needs</li>
-                    <li><strong>Accessibility:</strong> Information should be easily retrievable</li>
+        
+        <div class="pages" style="display: none;">
+            <div class="sidebar">
+                <h2>Table of Contents</h2>
+                <ul class="topics-list">
+                    <li class="active" data-target="data-info">Data & Information</li>
+                    <li data-target="database-purpose">Database & Purpose</li>
+                    <li data-target="terminologies">Database Terminologies</li>
+                    <li data-target="data-types">Data Types</li>
+                    <li data-target="data-dictionary">Data Dictionary</li>
+                    <li data-target="dbms">DBMS</li>
+                    <li data-target="db-models">Database Models</li>
+                    <li data-target="integrity">Integrity Constraints</li>
+                    <li data-target="normalization">Normalization</li>
+                    <li data-target="central-distributed">Centralized & Distributed DB</li>
+                    <li data-target="security">Database Security</li>
+                    <li data-target="dba">DBA & Roles</li>
+                    <li data-target="er-diagrams">ER Diagrams</li>
+                    <li data-target="sql">SQL (DDL & DML)</li>
+                    <li data-target="qa">Detailed Q&A</li>
                 </ul>
-            </article>
+            </div>
             
-            <article>
-                <h3>Database and its Purpose</h3>
-                <p>A database is an organized collection of structured information stored electronically in a computer system. Databases are designed to:</p>
-                <ul>
-                    <li>Store large amounts of data efficiently</li>
-                    <li>Enable quick retrieval of specific information</li>
-                    <li>Allow multiple users to access data simultaneously</li>
-                    <li>Maintain data accuracy and consistency</li>
-                    <li>Protect data through security measures</li>
-                    <li>Provide backup and recovery capabilities</li>
-                </ul>
-            </article>
-            
-            <article>
-                <h3>Database Terminologies</h3>
-                <div class="terminology-grid">
-                    <div class="term">
-                        <h4>Table</h4>
-                        <p>A collection of related data organized in rows and columns. Tables are the fundamental structure in relational databases.</p>
+            <div class="content">
+                <!-- Data & Information -->
+                <div class="page active" id="data-info">
+                    <h1>Data & Information</h1>
+                    
+                    <div class="definition">
+                        <p><strong>Data:</strong> Raw, unorganized facts that need to be processed. Data can be something simple and seemingly random until it is organized.</p>
                     </div>
-                    <div class="term">
-                        <h4>Field</h4>
-                        <p>A single piece of information in a table (column). Each field has a specific data type and constraints.</p>
+                    
+                    <div class="definition">
+                        <p><strong>Information:</strong> When data is processed, organized, structured or presented in a given context so as to make it useful, it is called information.</p>
                     </div>
-                    <div class="term">
-                        <h4>Record</h4>
-                        <p>A complete set of fields about one item (row). Also called a tuple in relational theory.</p>
-                    </div>
-                    <div class="term">
-                        <h4>Keys</h4>
-                        <p>Special fields used to identify records and establish relationships between tables (Primary Key, Foreign Key, etc.)</p>
-                    </div>
-                    <div class="term">
-                        <h4>Object</h4>
-                        <p>In object-oriented databases, an instance of a class that contains both data and methods.</p>
-                    </div>
-                    <div class="term">
-                        <h4>Data Dictionary</h4>
-                        <p>A metadata repository that describes the structure, relationships, and meaning of data elements.</p>
-                    </div>
-                </div>
-            </article>
-        </section>
-
-        <section id="dbms">
-            <h2>Database Management System (DBMS)</h2>
-            
-            <article>
-                <h3>Introduction to DBMS</h3>
-                <p>A DBMS is software that interacts with end users, applications, and the database itself to capture and analyze data. It serves as an interface between the database and end users or application programs, ensuring that data is consistently organized and remains easily accessible.</p>
-            </article>
-            
-            <article>
-                <h3>Objectives of DBMS</h3>
-                <ul>
-                    <li>Provide efficient and convenient environment for data access</li>
-                    <li>Eliminate data redundancy and inconsistency</li>
-                    <li>Ensure data integrity and security</li>
-                    <li>Support concurrent access with proper transaction management</li>
-                    <li>Provide backup and recovery facilities</li>
-                    <li>Maintain data independence between programs and data</li>
-                </ul>
-            </article>
-            
-            <article>
-                <h3>Advantages of DBMS</h3>
-                <div class="comparison">
-                    <div class="pros">
-                        <h4>Benefits</h4>
-                        <ul>
-                            <li>Reduced data redundancy</li>
-                            <li>Improved data integrity</li>
-                            <li>Enhanced data security</li>
-                            <li>Efficient data access</li>
-                            <li>Concurrent access control</li>
-                            <li>Backup and recovery</li>
-                        </ul>
-                    </div>
-                    <div class="cons">
-                        <h4>Limitations</h4>
-                        <ul>
-                            <li>Complexity in design and implementation</li>
-                            <li>High initial cost</li>
-                            <li>Performance overhead</li>
-                            <li>Vulnerability to failures</li>
-                            <li>Requires skilled personnel</li>
-                        </ul>
-                    </div>
-                </div>
-            </article>
-        </section>
-
-        <section id="models">
-            <h2>Types of Database Models</h2>
-            
-            <article>
-                <h3>Hierarchical Model</h3>
-                <p>Organizes data in a tree-like structure where each record has a single parent, except the root record. Uses parent-child relationships with one-to-many mapping between parent and child records.</p>
-                <p><strong>Example:</strong> File systems, XML documents</p>
-            </article>
-            
-            <article>
-                <h3>Network Model</h3>
-                <p>An extension of hierarchical model allowing multiple parents for a record. Uses graph structure with nodes representing records and edges representing relationships.</p>
-                <p><strong>Example:</strong> CODASYL database systems</p>
-            </article>
-            
-            <article>
-                <h3>Relational Model</h3>
-                <p>Stores data in tables (relations) with rows (tuples) and columns (attributes). Relationships between tables are established through foreign keys. Based on mathematical set theory and predicate logic.</p>
-                <p><strong>Example:</strong> MySQL, Oracle, SQL Server</p>
-            </article>
-            
-            <article>
-                <h3>Entity-Relationship Model</h3>
-                <p>A conceptual model that describes data as entities, attributes, and relationships. Used primarily for database design before implementation in a specific DBMS.</p>
-                <p><strong>Components:</strong> Entities, Attributes, Relationships, Cardinality</p>
-            </article>
-        </section>
-
-        <section id="design">
-            <h2>Database Design Principles</h2>
-            
-            <article>
-                <h3>Integrity Constraints</h3>
-                <div class="constraints">
-                    <div class="constraint">
-                        <h4>Domain Constraints</h4>
-                        <p>Restrict attribute values to a specific domain (data type, format, range).</p>
-                    </div>
-                    <div class="constraint">
-                        <h4>Entity Integrity</h4>
-                        <p>Primary key cannot contain null values and must be unique.</p>
-                    </div>
-                    <div class="constraint">
-                        <h4>Referential Integrity</h4>
-                        <p>Foreign key must match a primary key in the referenced table or be null.</p>
-                    </div>
-                </div>
-            </article>
-            
-            <article>
-                <h3>Normalization</h3>
-                <p>The process of organizing data to minimize redundancy by dividing tables and defining relationships.</p>
-                
-                <div class="normal-forms">
-                    <div class="nf">
-                        <h4>1NF (First Normal Form)</h4>
-                        <ul>
-                            <li>Each table cell should contain atomic values</li>
-                            <li>No repeating groups or arrays</li>
-                            <li>Each record needs to be unique</li>
-                        </ul>
-                    </div>
-                    <div class="nf">
-                        <h4>2NF (Second Normal Form)</h4>
-                        <ul>
-                            <li>Must be in 1NF</li>
-                            <li>No partial dependency (non-prime attributes dependent on proper subset of candidate key)</li>
-                        </ul>
-                    </div>
-                    <div class="nf">
-                        <h4>3NF (Third Normal Form)</h4>
-                        <ul>
-                            <li>Must be in 2NF</li>
-                            <li>No transitive dependency (non-prime attributes dependent on other non-prime attributes)</li>
-                        </ul>
-                    </div>
+                    
+                    <h2>Features of Information</h2>
+                    <ul>
+                        <li><strong>Accuracy:</strong> Information should be precise and free from errors</li>
+                        <li><strong>Completeness:</strong> All necessary details should be included</li>
+                        <li><strong>Timeliness:</strong> Information should be available when needed</li>
+                        <li><strong>Relevance:</strong> Information should be appropriate for the context</li>
+                        <li><strong>Consistency:</strong> Information should be consistent across different sources</li>
+                        <li><strong>Reliability:</strong> Information should come from trustworthy sources</li>
+                        <li><strong>Accessibility:</strong> Information should be easily accessible to authorized users</li>
+                    </ul>
                 </div>
                 
-                <div class="normalization-comparison">
-                    <div class="norm-pros">
-                        <h4>Advantages</h4>
-                        <ul>
-                            <li>Reduces data redundancy</li>
-                            <li>Improves data integrity</li>
-                            <li>Simplifies database structure</li>
-                            <li>Easier to maintain</li>
-                        </ul>
+                <!-- Database and its Purpose -->
+                <div class="page" id="database-purpose">
+                    <h1>Database and its Purpose</h1>
+                    
+                    <div class="definition">
+                        <p><strong>Database:</strong> A structured collection of data that is stored and organized to allow efficient retrieval, insertion, and deletion of data.</p>
                     </div>
-                    <div class="norm-cons">
-                        <h4>Disadvantages</h4>
-                        <ul>
-                            <li>More complex queries with joins</li>
-                            <li>Potential performance impact</li>
-                            <li>Requires careful design</li>
-                        </ul>
+                    
+                    <h2>Purpose of Database</h2>
+                    <ul>
+                        <li>To manage large amounts of data efficiently</li>
+                        <li>To provide persistent storage for data</li>
+                        <li>To eliminate data redundancy and inconsistency</li>
+                        <li>To facilitate data sharing among multiple users</li>
+                        <li>To maintain data integrity and security</li>
+                        <li>To provide backup and recovery mechanisms</li>
+                        <li>To support data independence between programs and data</li>
+                    </ul>
+                </div>
+                
+                <!-- Terminologies in Database -->
+                <div class="page" id="terminologies">
+                    <h1>Terminologies in Database</h1>
+                    
+                    <ul>
+                        <li><strong>Table:</strong> A collection of related data held in a structured format within a database, consisting of columns and rows.</li>
+                        <li><strong>Field:</strong> A single piece of information in a table, represented by a column.</li>
+                        <li><strong>Record:</strong> A complete set of information about a single entity in a table, represented by a row.</li>
+                        <li><strong>Tuple:</strong> Another term for a row or record in a database table.</li>
+                        <li><strong>Object:</strong> In object-oriented databases, an instance of a class that contains both data and methods.</li>
+                        <li><strong>Keys:</strong> Special fields that establish relationships between tables and enforce integrity constraints.
+                            <ul>
+                                <li><strong>Primary Key:</strong> Uniquely identifies each record in a table</li>
+                                <li><strong>Foreign Key:</strong> Establishes a link between two tables</li>
+                                <li><strong>Candidate Key:</strong> Any field that could serve as a primary key</li>
+                                <li><strong>Composite Key:</strong> A primary key consisting of multiple columns</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+                
+                <!-- Data Types -->
+                <div class="page" id="data-types">
+                    <h1>Data Types</h1>
+                    
+                    <p>Data types define the kind of data that can be stored in a database column:</p>
+                    
+                    <table class="table">
+                        <tr>
+                            <th>Data Type</th>
+                            <th>Description</th>
+                            <th>Examples</th>
+                        </tr>
+                        <tr>
+                            <td>INTEGER</td>
+                            <td>Whole numbers without decimals</td>
+                            <td>5, -12, 1000</td>
+                        </tr>
+                        <tr>
+                            <td>FLOAT/REAL</td>
+                            <td>Numbers with decimal points</td>
+                            <td>3.14, -0.5, 123.456</td>
+                        </tr>
+                        <tr>
+                            <td>CHAR</td>
+                            <td>Fixed-length character strings</td>
+                            <td>'A', 'YES', 'NO'</td>
+                        </tr>
+                        <tr>
+                            <td>VARCHAR</td>
+                            <td>Variable-length character strings</td>
+                            <td>'Hello', 'Database'</td>
+                        </tr>
+                        <tr>
+                            <td>DATE</td>
+                            <td>Stores date values</td>
+                            <td>'2023-05-15'</td>
+                        </tr>
+                        <tr>
+                            <td>TIME</td>
+                            <td>Stores time values</td>
+                            <td>'14:30:00'</td>
+                        </tr>
+                        <tr>
+                            <td>BOOLEAN</td>
+                            <td>True or false values</td>
+                            <td>TRUE, FALSE</td>
+                        </tr>
+                        <tr>
+                            <td>BLOB</td>
+                            <td>Binary large objects for storing files</td>
+                            <td>Images, documents</td>
+                        </tr>
+                    </table>
+                </div>
+                
+                <!-- Data Dictionary -->
+                <div class="page" id="data-dictionary">
+                    <h1>Data Dictionary</h1>
+                    
+                    <div class="definition">
+                        <p><strong>Data Dictionary:</strong> A centralized repository of information about data such as meaning, relationships to other data, origin, usage, and format. It contains metadata (data about data).</p>
+                    </div>
+                    
+                    <h2>Components of Data Dictionary</h2>
+                    <ul>
+                        <li>Data elements and their definitions</li>
+                        <li>Data types and sizes</li>
+                        <li>Relationships between data elements</li>
+                        <li>Constraints and validation rules</li>
+                        <li>Ownership information</li>
+                        <li>Security and access permissions</li>
+                    </ul>
+                    
+                    <h2>Benefits of Data Dictionary</h2>
+                    <ul>
+                        <li>Improves data consistency and quality</li>
+                        <li>Facilitates communication between stakeholders</li>
+                        <li>Helps in database design and maintenance</li>
+                        <li>Provides documentation for the database system</li>
+                        <li>Assists in impact analysis when changes are made</li>
+                    </ul>
+                </div>
+                
+                <!-- DBMS -->
+                <div class="page" id="dbms">
+                    <h1>Database Management System (DBMS)</h1>
+                    
+                    <div class="definition">
+                        <p><strong>DBMS:</strong> A software system that allows users to define, create, maintain, and control access to the database.</p>
+                    </div>
+                    
+                    <h2>Objectives of DBMS</h2>
+                    <ul>
+                        <li>Data abstraction and independence</li>
+                        <li>Efficient data access</li>
+                        <li>Data integrity and security</li>
+                        <li>Concurrent access and crash recovery</li>
+                        <li>Reduced application development time</li>
+                    </ul>
+                    
+                    <h2>Advantages of DBMS</h2>
+                    <ul>
+                        <li>Controls data redundancy</li>
+                        <li>Restricts unauthorized access</li>
+                        <li>Provides persistent storage</li>
+                        <li>Enforces integrity constraints</li>
+                        <li>Provides backup and recovery</li>
+                    </ul>
+                    
+                    <h2>Disadvantages of DBMS</h2>
+                    <ul>
+                        <li>Complexity in design and implementation</li>
+                        <li>High initial cost</li>
+                        <li>Performance overhead</li>
+                        <li>Vulnerability to failures</li>
+                        <li>Need for specialized personnel</li>
+                    </ul>
+                </div>
+                
+                <!-- Database Models -->
+                <div class="page" id="db-models">
+                    <h1>Types of Database Models</h1>
+                    
+                    <h2>Hierarchical Model</h2>
+                    <p>Organizes data in a tree-like structure with parent-child relationships. Each parent can have multiple children, but each child has only one parent.</p>
+                    
+                    <h2>Network Model</h2>
+                    <p>An extension of the hierarchical model that allows each child to have multiple parents, creating a network of relationships.</p>
+                    
+                    <h2>Relational Model</h2>
+                    <p>Stores data in tables (relations) consisting of rows and columns. Relationships are maintained through common fields.</p>
+                    
+                    <h2>Entity-Relationship Model</h2>
+                    <p>A conceptual model that describes data as entities, attributes, and relationships. It's often used as a blueprint for database design.</p>
+                    
+                    <div class="diagram">
+                        <div class="diagram-placeholder">Database Models Comparison Diagram</div>
+                        <p>Visual representation of different database models</p>
                     </div>
                 </div>
-            </article>
-            
-            <article>
-                <h3>Centralized vs Distributed Databases</h3>
-                <div class="db-comparison">
-                    <div class="centralized">
-                        <h4>Centralized Database</h4>
-                        <p>All data stored at a single location</p>
-                        <ul>
-                            <li><strong>Advantages:</strong> Easier to manage, consistent, lower complexity</li>
-                            <li><strong>Disadvantages:</strong> Single point of failure, performance bottleneck</li>
-                        </ul>
+                
+                <!-- Integrity Constraints -->
+                <div class="page" id="integrity">
+                    <h1>Integrity Constraints and Types</h1>
+                    
+                    <div class="definition">
+                        <p><strong>Integrity Constraints:</strong> Rules that ensure the accuracy and consistency of data in a database.</p>
                     </div>
-                    <div class="distributed">
-                        <h4>Distributed Database</h4>
-                        <p>Data spread across multiple locations</p>
-                        <ul>
-                            <li><strong>Advantages:</strong> Improved availability, better performance for local queries</li>
-                            <li><strong>Disadvantages:</strong> Complex management, consistency challenges</li>
-                        </ul>
+                    
+                    <h2>Types of Integrity Constraints</h2>
+                    
+                    <h3>Domain Constraints</h3>
+                    <p>Define the valid values for a given attribute. For example, age must be a positive integer.</p>
+                    
+                    <h3>Entity Integrity</h3>
+                    <p>Ensures that each row in a table is uniquely identifiable. The primary key cannot contain NULL values.</p>
+                    
+                    <h3>Referential Integrity</h3>
+                    <p>Ensures that relationships between tables remain consistent. A foreign key must match a primary key in another table or be NULL.</p>
+                    
+                    <h3>Key Constraints</h3>
+                    <p>Define which attributes can serve as keys to identify tuples uniquely.</p>
+                </div>
+                
+                <!-- Normalization -->
+                <div class="page" id="normalization">
+                    <h1>Normalization</h1>
+                    
+                    <div class="definition">
+                        <p><strong>Normalization:</strong> The process of organizing data in a database to reduce redundancy and improve data integrity.</p>
+                    </div>
+                    
+                    <h2>Normal Forms</h2>
+                    
+                    <h3>First Normal Form (1NF)</h3>
+                    <p>Eliminates repeating groups by ensuring that each attribute contains only atomic values.</p>
+                    
+                    <h3>Second Normal Form (2NF)</h3>
+                    <p>Meets all requirements of 1NF and removes partial dependencies by ensuring that all non-key attributes are fully functionally dependent on the primary key.</p>
+                    
+                    <h3>Third Normal Form (3NF)</h3>
+                    <p>Meets all requirements of 2NF and removes transitive dependencies by ensuring that non-key attributes are not dependent on other non-key attributes.</p>
+                    
+                    <h2>Advantages of Normalization</h2>
+                    <ul>
+                        <li>Reduces data redundancy</li>
+                        <li>Improves data integrity</li>
+                        <li>Simplifies database design</li>
+                        <li>Facilitates database maintenance</li>
+                    </ul>
+                    
+                    <h2>Disadvantages of Normalization</h2>
+                    <ul>
+                        <li>Increases complexity of queries</li>
+                        <li>May reduce performance due to joins</li>
+                        <li>Can make some operations more complicated</li>
+                    </ul>
+                </div>
+                
+                <!-- Centralized and Distributed Database -->
+                <div class="page" id="central-distributed">
+                    <h1>Centralized and Distributed Database</h1>
+                    
+                    <h2>Centralized Database</h2>
+                    <p>A database that is located, stored, and maintained in a single location.</p>
+                    
+                    <h3>Advantages</h3>
+                    <ul>
+                        <li>Easier to manage and maintain</li>
+                        <li>Lower hardware and software costs</li>
+                        <li>Better data integrity and security</li>
+                    </ul>
+                    
+                    <h3>Disadvantages</h3>
+                    <ul>
+                        <li>Single point of failure</li>
+                        <li>Performance bottlenecks</li>
+                        <li>Limited scalability</li>
+                    </ul>
+                    
+                    <h2>Distributed Database</h2>
+                    <p>A database in which storage devices are not all attached to a common processing unit and are spread over multiple locations.</p>
+                    
+                    <h3>Advantages</h3>
+                    <ul>
+                        <li>Improved reliability and availability</li>
+                        <li>Faster response for local queries</li>
+                        <li>Easier expansion</li>
+                    </ul>
+                    
+                    <h3>Disadvantages</h3>
+                    <ul>
+                        <li>Increased complexity</li>
+                        <li>Higher communication costs</li>
+                        <li>Data integrity maintenance challenges</li>
+                    </ul>
+                    
+                    <div class="diagram">
+                        <div class="diagram-placeholder">Centralized vs Distributed Database Architecture Diagram</div>
+                        <p>Visual comparison of centralized and distributed database architectures</p>
                     </div>
                 </div>
-            </article>
-        </section>
-
-        <section id="security">
-            <h2>Database Security</h2>
-            
-            <article>
-                <h3>Introduction to Database Security</h3>
-                <p>Database security refers to the collective measures used to protect and secure database management systems from malicious threats and unauthorized access.</p>
-            </article>
-            
-            <article>
-                <h3>Security Challenges</h3>
-                <ul>
-                    <li>Unauthorized access</li>
-                    <li>SQL injection attacks</li>
-                    <li>Data breaches</li>
-                    <li>Denial of service</li>
-                    <li>Weak authentication</li>
-                    <li>Insufficient auditing</li>
-                </ul>
-            </article>
-            
-            <article>
-                <h3>Security Measures</h3>
-                <div class="security-measures">
-                    <div class="measure">
-                        <h4>Authentication</h4>
-                        <p>Verify user identity through passwords, biometrics, etc.</p>
+                
+                <!-- Database Security -->
+                <div class="page" id="security">
+                    <h1>Database Security</h1>
+                    
+                    <div class="definition">
+                        <p><strong>Database Security:</strong> The protection of database against intentional or accidental threats that may be computer-based or non-computer-based.</p>
                     </div>
-                    <div class="measure">
-                        <h4>Authorization</h4>
-                        <p>Define user privileges and access levels (RBAC)</p>
+                    
+                    <h2>Challenges in Database Security</h2>
+                    <ul>
+                        <li>Unauthorized access</li>
+                        <li>SQL injection attacks</li>
+                        <li>Data privacy concerns</li>
+                        <li>Data integrity issues</li>
+                        <li>Denial of service attacks</li>
+                    </ul>
+                    
+                    <h2>Security Measures</h2>
+                    <ul>
+                        <li>Authentication and authorization</li>
+                        <li>Access control mechanisms</li>
+                        <li>Encryption of sensitive data</li>
+                        <li>Auditing and logging</li>
+                        <li>Regular backups and recovery procedures</li>
+                        <li>Firewalls and network security</li>
+                    </ul>
+                </div>
+                
+                <!-- DBA and Roles of DBA -->
+                <div class="page" id="dba">
+                    <h1>DBA and Roles of DBA</h1>
+                    
+                    <div class="definition">
+                        <p><strong>Database Administrator (DBA):</strong> A person responsible for the design, implementation, maintenance, and repair of an organization's database.</p>
                     </div>
-                    <div class="measure">
-                        <h4>Encryption</h4>
-                        <p>Protect data at rest and in transit</p>
+                    
+                    <h2>Roles and Responsibilities of DBA</h2>
+                    <ul>
+                        <li>Database design and implementation</li>
+                        <li>User management and security</li>
+                        <li>Backup and recovery planning</li>
+                        <li>Performance monitoring and tuning</li>
+                        <li>Ensuring data integrity</li>
+                        <li>Capacity planning</li>
+                        <li>Troubleshooting and problem resolution</li>
+                        <li>Documentation and reporting</li>
+                    </ul>
+                </div>
+                
+                <!-- ER Diagrams -->
+                <div class="page" id="er-diagrams">
+                    <h1>ER Diagrams</h1>
+                    
+                    <div class="definition">
+                        <p><strong>ER Diagram:</strong> A visual representation of entities and their relationships to each other, typically used in database design.</p>
                     </div>
-                    <div class="measure">
-                        <h4>Auditing</h4>
-                        <p>Track database activities and changes</p>
-                    </div>
-                    <div class="measure">
-                        <h4>Backups</h4>
-                        <p>Regular data backups for recovery</p>
+                    
+                    <h2>Components of ER Diagrams</h2>
+                    
+                    <h3>Entity</h3>
+                    <p>A real-world object or concept that can have data stored about it. Represented as rectangles.</p>
+                    
+                    <h3>Attributes</h3>
+                    <p>Properties or characteristics of an entity. Represented as ovals.</p>
+                    
+                    <h3>Relationships</h3>
+                    <p>Associations between entities. Represented as diamonds.</p>
+                    
+                    <h3>Cardinality</h3>
+                    <p>Defines the numerical relationship between two entities. Types include:
+                        <ul>
+                            <li>One-to-One (1:1)</li>
+                            <li>One-to-Many (1:N)</li>
+                            <li>Many-to-One (N:1)</li>
+                            <li>Many-to-Many (M:N)</li>
+                        </ul>
+                    </p>
+                    
+                    <h3>Degree</h3>
+                    <p>The number of entities participating in a relationship. Types include:
+                        <ul>
+                            <li>Unary (one entity)</li>
+                            <li>Binary (two entities)</li>
+                            <li>Ternary (three entities)</li>
+                        </ul>
+                    </p>
+                    
+                    <div class="diagram">
+                        <div class="diagram-placeholder">ER Diagram Symbols and Notation</div>
+                        <p>Visual representation of ER diagram symbols and their meanings</p>
                     </div>
                 </div>
-            </article>
-            
-            <article>
-                <h3>Roles of Database Administrator (DBA)</h3>
-                <ul>
-                    <li>Install and configure DBMS software</li>
-                    <li>Design and implement database structures</li>
-                    <li>Manage database security and user access</li>
-                    <li>Monitor and optimize database performance</li>
-                    <li>Implement backup and recovery plans</li>
-                    <li>Troubleshoot database issues</li>
-                    <li>Plan for capacity growth</li>
-                </ul>
-            </article>
-        </section>
-
-        <section id="practical">
-            <h2>Practical Database Topics</h2>
-            
-            <article>
-                <h3>DDL and DML Languages</h3>
-                <div class="sql-languages">
-                    <div class="ddl">
-                        <h4>DDL (Data Definition Language)</h4>
-                        <p>Commands used to define and modify database structure:</p>
-                        <ul>
-                            <li><code>CREATE</code> - Create database objects</li>
-                            <li><code>ALTER</code> - Modify existing objects</li>
-                            <li><code>DROP</code> - Remove objects</li>
-                            <li><code>TRUNCATE</code> - Remove all records</li>
-                            <li><code>RENAME</code> - Rename objects</li>
-                        </ul>
+                
+                <!-- SQL -->
+                <div class="page" id="sql">
+                    <h1>SQL (DDL and DML)</h1>
+                    
+                    <div class="definition">
+                        <p><strong>SQL (Structured Query Language):</strong> A standard language for storing, manipulating, and retrieving data in databases.</p>
                     </div>
-                    <div class="dml">
-                        <h4>DML (Data Manipulation Language)</h4>
-                        <p>Commands used to manage data within objects:</p>
-                        <ul>
-                            <li><code>SELECT</code> - Retrieve data</li>
-                            <li><code>INSERT</code> - Add new records</li>
-                            <li><code>UPDATE</code> - Modify existing records</li>
-                            <li><code>DELETE</code> - Remove records</li>
-                            <li><code>MERGE</code> - UPSERT operation</li>
-                        </ul>
-                    </div>
+                    
+                    <h2>DDL (Data Definition Language)</h2>
+                    <p>Commands used to define the database structure:</p>
+                    <ul>
+                        <li><code>CREATE</code> - Creates database objects</li>
+                        <li><code>ALTER</code> - Modifies database objects</li>
+                        <li><code>DROP</code> - Deletes database objects</li>
+                        <li><code>TRUNCATE</code> - Removes all records from a table</li>
+                        <li><code>RENAME</code> - Renames database objects</li>
+                    </ul>
+                    
+                    <h2>DML (Data Manipulation Language)</h2>
+                    <p>Commands used to manipulate data:</p>
+                    <ul>
+                        <li><code>SELECT</code> - Retrieves data from database</li>
+                        <li><code>INSERT</code> - Adds new data to database</li>
+                        <li><code>UPDATE</code> - Modifies existing data</li>
+                        <li><code>DELETE</code> - Removes data from database</li>
+                    </ul>
+                    
+                    <h2>Data Constraints</h2>
+                    <ul>
+                        <li><code>NOT NULL</code> - Ensures a column cannot have NULL value</li>
+                        <li><code>UNIQUE</code> - Ensures all values in a column are different</li>
+                        <li><code>PRIMARY KEY</code> - Uniquely identifies each row in a table</li>
+                        <li><code>AUTO INCREMENT</code> - Automatically generates a unique number when a new record is inserted</li>
+                    </ul>
+                    
+                    <h2>Operators</h2>
+                    <ul>
+                        <li><code>AND</code> - Displays records where all conditions are true</li>
+                        <li><code>OR</code> - Displays records where at least one condition is true</li>
+                        <li><code>NOT</code> - Displays records where the condition is not true</li>
+                    </ul>
+                    
+                    <h2>WHERE Clause</h2>
+                    <p>Used to filter records based on specified conditions.</p>
+                    
+                    <h2>ORDER BY</h2>
+                    <p>Used to sort the result-set in ascending or descending order.</p>
+                    
+                    <h2>SQL JOIN</h2>
+                    <p>Used to combine rows from two or more tables based on a related column.</p>
+                    <ul>
+                        <li><strong>INNER JOIN:</strong> Returns records that have matching values in both tables</li>
+                        <li><strong>LEFT JOIN:</strong> Returns all records from the left table, and matched records from the right table</li>
+                        <li><strong>RIGHT JOIN:</strong> Returns all records from the right table, and matched records from the left table</li>
+                        <li><strong>FULL JOIN:</strong> Returns all records when there is a match in either left or right table</li>
+                    </ul>
                 </div>
-            </article>
-            
-            <article>
-                <h3>SQL Data Types</h3>
-                <div class="data-types">
-                    <div class="type-group">
-                        <h4>String Types</h4>
+                
+                <!-- Detailed Q&A -->
+                <div class="page" id="qa">
+                    <h1>Database Management System (DBMS) - Detailed Q&A</h1>
+                    
+                    <div class="question">
+                        <h3>1. What is Database and DBMS? List out the advantages and disadvantages of DBMS.</h3>
+                    </div>
+                    <div class="answer">
+                        <p>A Database is a structured collection of data that can be easily accessed, managed, and updated. It helps in organizing data efficiently and allows users to perform operations like retrieval, insertion, and deletion.</p>
+                        <p>A DBMS (Database Management System) is a software system that enables the creation, maintenance, and use of databases. It acts as an interface between the database and the end users or application programs.</p>
+                        
+                        <h4>Advantages of DBMS:</h4>
                         <ul>
-                            <li><strong>CHAR(n)</strong> - Fixed-length string (n characters)</li>
-                            <li><strong>VARCHAR(n)</strong> - Variable-length string (max n characters)</li>
-                            <li><strong>TEXT</strong> - Variable-length large string</li>
-                            <li><strong>TINYTEXT</strong> - Very small string (255 chars)</li>
-                            <li><strong>LONGTEXT</strong> - Very large text (4GB)</li>
-                            <li><strong>ENUM</strong> - String with predefined values</li>
+                            <li>Minimizes data redundancy by integrating all data in a single database.</li>
+                            <li>Ensures data consistency and integrity across applications.</li>
+                            <li>Improves data security with access controls and user authentication.</li>
+                            <li>Supports data backup and recovery mechanisms.</li>
+                            <li>Allows concurrent access and efficient data manipulation.</li>
+                        </ul>
+                        
+                        <h4>Disadvantages of DBMS:</h4>
+                        <ul>
+                            <li>High initial and maintenance cost.</li>
+                            <li>Requires trained personnel to manage the system.</li>
+                            <li>Hardware and software complexity.</li>
+                            <li>Performance overhead in handling large data under high traffic.</li>
                         </ul>
                     </div>
-                    <div class="type-group">
-                        <h4>Numeric Types</h4>
+                    
+                    <div class="question">
+                        <h3>2. Differentiate between file processing system and DBMS. Give at least four points.</h3>
+                    </div>
+                    <div class="answer">
+                        <table class="table">
+                            <tr>
+                                <th>Aspect</th>
+                                <th>File Processing System</th>
+                                <th>DBMS</th>
+                            </tr>
+                            <tr>
+                                <td>Data Redundancy</td>
+                                <td>High in file systems</td>
+                                <td>Low in DBMS due to centralized control</td>
+                            </tr>
+                            <tr>
+                                <td>Data Access</td>
+                                <td>File systems require custom programs</td>
+                                <td>DBMS provides query languages like SQL</td>
+                            </tr>
+                            <tr>
+                                <td>Data Integrity</td>
+                                <td>Hard to enforce in file systems</td>
+                                <td>DBMS ensures integrity through constraints</td>
+                            </tr>
+                            <tr>
+                                <td>Security</td>
+                                <td>File systems have limited security</td>
+                                <td>DBMS offers robust security and permissions</td>
+                            </tr>
+                        </table>
+                    </div>
+                    
+                    <div class="question">
+                        <h3>3. Explain the different models of DBMS with advantages and disadvantages.</h3>
+                    </div>
+                    <div class="answer">
+                        <h4>Hierarchical Model:</h4>
+                        <p>Organizes data in a tree-like structure with parent-child relationships.</p>
+                        <p><strong>Advantage:</strong> Fast data access for hierarchical data.</p>
+                        <p><strong>Disadvantage:</strong> Difficult to manage complex relationships.</p>
+                        
+                        <h4>Network Model:</h4>
+                        <p>Data is organized using a graph, allowing multiple parent-child relationships.</p>
+                        <p><strong>Advantage:</strong> Flexible relationship management.</p>
+                        <p><strong>Disadvantage:</strong> Complex structure and navigation.</p>
+                        
+                        <h4>Relational Model:</h4>
+                        <p>Data is stored in tables with rows and columns.</p>
+                        <p><strong>Advantage:</strong> Easy to use and widely supported.</p>
+                        <p><strong>Disadvantage:</strong> Performance may be slower with very large data.</p>
+                    </div>
+                    
+                    <div class="question">
+                        <h3>4. What is a relational database? How is it different from other database models?</h3>
+                    </div>
+                    <div class="answer">
+                        <p>A relational database is a type of database that stores data in tabular form. Each table (relation) contains rows (records) and columns (attributes). It uses structured query language (SQL) for data operations.</p>
+                        
+                        <h4>Differences:</h4>
                         <ul>
-                            <li><strong>BIT</strong> - Binary value (0 or 1)</li>
-                            <li><strong>TINYINT</strong> - Very small integer (-128 to 127)</li>
-                            <li><strong>BOOLEAN</strong> - True/false values</li>
-                            <li><strong>INTEGER</strong> - Standard integer</li>
-                            <li><strong>FLOAT</strong> - Approximate numeric value</li>
-                            <li><strong>DOUBLE</strong> - Double precision floating point</li>
-                            <li><strong>DECIMAL(p,s)</strong> - Exact numeric with precision</li>
+                            <li>Based on mathematical relations unlike hierarchical/network models.</li>
+                            <li>More flexible and user-friendly due to SQL.</li>
+                            <li>Supports constraints, normalization, and better data integrity.</li>
                         </ul>
                     </div>
-                    <div class="type-group">
-                        <h4>Binary & Date Types</h4>
+                    
+                    <div class="question">
+                        <h3>5. What is data redundancy? How does DBMS help in reducing it?</h3>
+                    </div>
+                    <div class="answer">
+                        <p>Data redundancy refers to unnecessary repetition of data in different locations. It leads to wasted storage and potential inconsistency.</p>
+                        <p>DBMS minimizes redundancy by storing data centrally and using keys to relate tables. This avoids duplication and improves integrity and efficiency.</p>
+                    </div>
+                    
+                    <div class="question">
+                        <h3>6. Write differentiate between centralized and distributed database systems.</h3>
+                    </div>
+                    <div class="answer">
+                        <table class="table">
+                            <tr>
+                                <th>Aspect</th>
+                                <th>Centralized Database</th>
+                                <th>Distributed Database</th>
+                            </tr>
+                            <tr>
+                                <td>Data Storage</td>
+                                <td>All data stored in a single location</td>
+                                <td>Data stored across multiple sites connected via network</td>
+                            </tr>
+                            <tr>
+                                <td>Failure Impact</td>
+                                <td>Centralized is prone to total failure</td>
+                                <td>Distributed systems offer fault tolerance</td>
+                            </tr>
+                            <tr>
+                                <td>Performance</td>
+                                <td>Centralized has latency issues</td>
+                                <td>Distributed improves local access speed</td>
+                            </tr>
+                        </table>
+                    </div>
+                    
+                    <div class="question">
+                        <h3>7. Who is Database Administrator (DBA)? What are the major responsibilities of DBA?</h3>
+                    </div>
+                    <div class="answer">
+                        <p>A Database Administrator (DBA) is a person responsible for managing and maintaining database systems.</p>
+                        
+                        <h4>Responsibilities include:</h4>
                         <ul>
-                            <li><strong>BINARY(n)</strong> - Fixed-length binary data</li>
-                            <li><strong>VARBINARY(n)</strong> - Variable-length binary</li>
-                            <li><strong>TINYBLOB</strong> - Small binary objects (255 bytes)</li>
-                            <li><strong>DATE</strong> - Date values (YYYY-MM-DD)</li>
-                            <li><strong>DATETIME</strong> - Date and time combination</li>
+                            <li>Database design and implementation.</li>
+                            <li>Monitoring performance and optimizing queries.</li>
+                            <li>Ensuring data security and access control.</li>
+                            <li>Creating backup and recovery strategies.</li>
+                            <li>Managing users and roles.</li>
                         </ul>
                     </div>
-                </div>
-            </article>
-        </section>
-         <section id="past"<article>
-<h1>Database Management System (DBMS) - Detailed Q&A</h1>
-
-<div class="question">
-    <h2>1. What is Database and DBMS? List out the advantages and disadvantages of DBMS.</h2>
-    <p>
-        A <strong>Database</strong> is a structured collection of data that can be easily accessed, managed, and updated. It helps in organizing data efficiently and allows users to perform operations like retrieval, insertion, and deletion.
-    </p>
-    <p>
-        A <strong>DBMS (Database Management System)</strong> is a software system that enables the creation, maintenance, and use of databases. It acts as an interface between the database and the end users or application programs.
-    </p>
-    <p><strong>Advantages of DBMS:</strong></p>
-    <ul>
-        <li>Minimizes data redundancy by integrating all data in a single database.</li>
-        <li>Ensures data consistency and integrity across applications.</li>
-        <li>Improves data security with access controls and user authentication.</li>
-        <li>Supports data backup and recovery mechanisms.</li>
-        <li>Allows concurrent access and efficient data manipulation.</li>
-    </ul>
-    <p><strong>Disadvantages of DBMS:</strong></p>
-    <ul>
-        <li>High initial and maintenance cost.</li>
-        <li>Requires trained personnel to manage the system.</li>
-        <li>Hardware and software complexity.</li>
-        <li>Performance overhead in handling large data under high traffic.</li>
-    </ul>
-</div>
-
-<div class="question">
-    <h2>2. Differentiate between file processing system and DBMS. Give at least four points.</h2>
-    <ul>
-        <li><strong>Data Redundancy:</strong> High in file systems; Low in DBMS due to centralized control.</li>
-        <li><strong>Data Access:</strong> File systems require custom programs; DBMS provides query languages like SQL.</li>
-        <li><strong>Data Integrity:</strong> Hard to enforce in file systems; DBMS ensures integrity through constraints.</li>
-        <li><strong>Security:</strong> File systems have limited security; DBMS offers robust security and permissions.</li>
-    </ul>
-</div>
-
-<div class="question">
-    <h2>3. Explain the different models of DBMS with advantages and disadvantages.</h2>
-    <ul>
-        <li><strong>Hierarchical Model:</strong> Organizes data in a tree-like structure with parent-child relationships.
-            <ul>
-                <li><strong>Advantage:</strong> Fast data access for hierarchical data.</li>
-                <li><strong>Disadvantage:</strong> Difficult to manage complex relationships.</li>
-            </ul>
-        </li>
-        <li><strong>Network Model:</strong> Data is organized using a graph, allowing multiple parent-child relationships.
-            <ul>
-                <li><strong>Advantage:</strong> Flexible relationship management.</li>
-                <li><strong>Disadvantage:</strong> Complex structure and navigation.</li>
-            </ul>
-        </li>
-        <li><strong>Relational Model:</strong> Data is stored in tables with rows and columns.
-            <ul>
-                <li><strong>Advantage:</strong> Easy to use and widely supported.</li>
-                <li><strong>Disadvantage:</strong> Performance may be slower with very large data.</li>
-            </ul>
-        </li>
-    </ul>
-</div>
-
-<div class="question">
-    <h2>4. What is a relational database? How is it different from other database models?</h2>
-    <p>
-        A <strong>relational database</strong> is a type of database that stores data in tabular form. Each table (relation) contains rows (records) and columns (attributes). It uses structured query language (SQL) for data operations.
-    </p>
-    <p><strong>Differences:</strong></p>
-    <ul>
-        <li>Based on mathematical relations unlike hierarchical/network models.</li>
-        <li>More flexible and user-friendly due to SQL.</li>
-        <li>Supports constraints, normalization, and better data integrity.</li>
-    </ul>
-</div>
-
-<div class="question">
-    <h2>5. What is data redundancy? How does DBMS help in reducing it?</h2>
-    <p>
-        <strong>Data redundancy</strong> refers to unnecessary repetition of data in different locations. It leads to wasted storage and potential inconsistency.
-    </p>
-    <p>
-        DBMS minimizes redundancy by storing data centrally and using keys to relate tables. This avoids duplication and improves integrity and efficiency.
-    </p>
-</div>
-
-<div class="question">
-    <h2>6. Write differentiate between centralized and distributed database systems.</h2>
-    <ul>
-        <li><strong>Centralized:</strong> All data stored in a single location.</li>
-        <li><strong>Distributed:</strong> Data stored across multiple sites connected via network.</li>
-        <li><strong>Failure Impact:</strong> Centralized is prone to total failure; distributed systems offer fault tolerance.</li>
-        <li><strong>Performance:</strong> Centralized has latency issues; distributed improves local access speed.</li>
-    </ul>
-</div>
-
-<div class="question">
-    <h2>7. Who is Database Administrator (DBA)? What are the major responsibilities of DBA?</h2>
-    <p>
-        A <strong>Database Administrator (DBA)</strong> is a person responsible for managing and maintaining database systems.
-    </p>
-    <p><strong>Responsibilities include:</strong></p>
-    <ul>
-        <li>Database design and implementation.</li>
-        <li>Monitoring performance and optimizing queries.</li>
-        <li>Ensuring data security and access control.</li>
-        <li>Creating backup and recovery strategies.</li>
-        <li>Managing users and roles.</li>
-    </ul>
-</div>
-
-<div class="question">
-    <h2>8. Define normalization. Explain 1NF, 2NF and 3NF with suitable examples.</h2>
-    <p>
-        <strong>Normalization</strong> is a technique to design relational databases to reduce redundancy and improve data integrity.
-    </p>
-    <p><strong>1NF (First Normal Form):</strong> All attributes should have atomic values.</p>
-    <pre><code>
-    Example:
-    Invalid: {Name: "John", Phone: "123,456"}
-    Valid: {Name: "John", Phone: "123"} and another row with "456"
-    </code></pre>
-    <p><strong>2NF (Second Normal Form):</strong> No partial dependency of non-key attributes on part of a composite key.</p>
-    <p><strong>3NF (Third Normal Form):</strong> No transitive dependency. Non-key attributes should not depend on other non-key attributes.</p>
-</div>
-
-<div class="question">
-    <h2>9. Explain the terms: primary key, foreign key, and candidate key with examples.</h2>
-    <ul>
-        <li><strong>Primary Key:</strong> Uniquely identifies each record in a table.<br>Example: StudentID in Students table.</li>
-        <li><strong>Foreign Key:</strong> Refers to primary key of another table to establish relationship.<br>Example: CourseID in Enrollment table refers to Courses table.</li>
-        <li><strong>Candidate Key:</strong> All possible keys that can act as primary key. One of them is chosen as primary key.</li>
-    </ul>
-</div>
-
-<div class="question">
-    <h2>10. What is SQL? Explain its components and common functions.</h2>
-    <p>
-        <strong>SQL (Structured Query Language)</strong> is a standard language to store, manipulate, and retrieve data from relational databases.
-    </p>
-    <p><strong>Components:</strong></p>
-    <ul>
-        <li><strong>DDL (Data Definition Language):</strong> CREATE, ALTER, DROP</li>
-        <li><strong>DML (Data Manipulation Language):</strong> SELECT, INSERT, UPDATE, DELETE</li>
-        <li><strong>DCL (Data Control Language):</strong> GRANT, REVOKE</li>
-        <li><strong>TCL (Transaction Control Language):</strong> COMMIT, ROLLBACK</li>
-    </ul>
-</div>
-<div class="question">
-    <h2>11. Write SQL commands to perform the following operations:</h2>
-
-    <h3>a. Create a table named <code>students</code> with the fields: Id, Name, Class, and Marks.</h3>
-    <pre><code>
-CREATE TABLE students (
-    Id INT PRIMARY KEY,
-    Name VARCHAR(50),
-    Class VARCHAR(20),
-    Marks INT
-);
-    </code></pre>
-    
-
-    <h3>b. Insert records into the <code>students</code> table with appropriate values.</h3>
-    <pre><code>
-INSERT INTO students (Id, Name, Class, Marks) VALUES 
+                    
+                    <div class="question">
+                        <h3>8. Define normalization. Explain 1NF, 2NF and 3NF with suitable examples.</h3>
+                    </div>
+                    <div class="answer">
+                        <p>Normalization is a technique to design relational databases to reduce redundancy and improve data integrity.</p>
+                        
+                        <h4>1NF (First Normal Form):</h4>
+                        <p>All attributes should have atomic values.</p>
+                        <p><strong>Example:</strong></p>
+                        <pre>
+Invalid: {Name: "John", Phone: "123,456"}
+Valid: {Name: "John", Phone: "123"} and another row with "456"</pre>
+                        
+                        <h4>2NF (Second Normal Form):</h4>
+                        <p>No partial dependency of non-key attributes on part of a composite key.</p>
+                        
+                        <h4>3NF (Third Normal Form):</h4>
+                        <p>No transitive dependency. Non-key attributes should not depend on other non-key attributes.</p>
+                    </div>
+                    
+                    <div class="question">
+                        <h3>9. Explain the terms: primary key, foreign key, and candidate key with examples.</h3>
+                    </div>
+                    <div class="answer">
+                        <h4>Primary Key:</h4>
+                        <p>Uniquely identifies each record in a table.</p>
+                        <p><strong>Example:</strong> StudentID in Students table.</p>
+                        
+                        <h4>Foreign Key:</h4>
+                        <p>Refers to primary key of another table to establish relationship.</p>
+                        <p><strong>Example:</strong> CourseID in Enrollment table refers to Courses table.</p>
+                        
+                        <h4>Candidate Key:</h4>
+                        <p>All possible keys that can act as primary key. One of them is chosen as primary key.</p>
+                    </div>
+                    
+                    <div class="question">
+                        <h3>10. What is SQL? Explain its components and common functions.</h3>
+                    </div>
+                    <div class="answer">
+                        <p>SQL (Structured Query Language) is a standard language to store, manipulate, and retrieve data from relational databases.</p>
+                        
+                        <h4>Components:</h4>
+                        <ul>
+                            <li>DDL (Data Definition Language): CREATE, ALTER, DROP</li>
+                            <li>DML (Data Manipulation Language): SELECT, INSERT, UPDATE, DELETE</li>
+                            <li>DCL (Data Control Language): GRANT, REVOKE</li>
+                            <li>TCL (Transaction Control Language): COMMIT, ROLLBACK</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="question">
+                        <h3>11. Write SQL commands to perform the following operations:</h3>
+                        <p>a. Create a table named students with the fields: Id, Name, Class, and Marks.</p>
+                        <p>b. Insert records into the students table with appropriate values.</p>
+                        <p>c. Display all records from the students table.</p>
+                        <p>d. Update the marks of a student whose name is 'Anita' to 85.</p>
+                        <p>e. Delete the record of the student with id = 3.</p>
+                    </div>
+                    <div class="answer">
+                        <h4>a. Create table:</h4>
+                        <pre>
+<span class="sql-keyword">CREATE TABLE</span> students (
+    Id <span class="sql-keyword">INT PRIMARY KEY</span>,
+    Name <span class="sql-keyword">VARCHAR</span>(50),
+    Class <span class="sql-keyword">VARCHAR</span>(20),
+    Marks <span class="sql-keyword">INT</span>
+);</pre>
+                        
+                        <h4>b. Insert records:</h4>
+                        <pre>
+<span class="sql-keyword">INSERT INTO</span> students (Id, Name, Class, Marks) <span class="sql-keyword">VALUES</span> 
 (1, 'Anita', '10A', 78),
 (2, 'Rahul', '10B', 88),
-(3, 'Neha', '10A', 92);
-    </code></pre>
-    <img src="9.png" alt="Insert screenshot/output of insert operation here">
-
-    <h3>c. Display all records from the <code>students</code> table.</h3>
-    <pre><code>
-SELECT * FROM students;
-    </code></pre>
-    <img src="8.png" alt="Insert screenshot/output of select operation here">
-
-    <h3>d. Update the marks of a student whose name is 'Anita' to 85.</h3>
-    <pre><code>
-UPDATE students
-SET Marks = 85
-WHERE Name = 'Anita';
-    </code></pre>
-    <img src="10.png" alt="Insert screenshot/output of update operation here">
-
-    <h3>e. Delete the record of the student with id = 3.</h3>
-    <pre><code>
-DELETE FROM students
-WHERE Id = 3;
-    </code></pre>
-    <img src="11.png" alt="Insert screenshot/output of delete operation here">
-</div>
-
-
-<div class="question">
-    <h2>12. Define the following terms.</h2>
-    <ul>
-        <li><strong>a. Data Dictionary:</strong> Stores metadata or information about database structure.</li>
-        <li><strong>b. Primary Key:</strong> Unique identifier for records in a table.</li>
-        <li><strong>c. Relationship:</strong> Logical association between tables.</li>
-        <li><strong>d. DML:</strong> Language to manipulate data in tables (e.g., INSERT, UPDATE).</li>
-        <li><strong>e. SQL:</strong> Language for interacting with relational databases.</li>
-        <li><strong>f. Data Integrity:</strong> Ensures data is accurate and consistent.</li>
-        <li><strong>g. DDL:</strong> Commands used to define or modify database structure (e.g., CREATE, DROP).</li>
-        <li><strong>h. Data Security:</strong> Protection of data from unauthorized access.</li>
-        <li><strong>i. Database System:</strong> Comprises DBMS software, the database, and the hardware/system environment.</li>
-    </ul>
-</div>
-
-
-</article>
-</section>
-
-
-    </main>
-
-    <footer>
-        <div class="container">
-            <p>© 2023 Database Management System Guide</p>
-            <p>Educational Resource for Database Concepts</p>
+(3, 'Neha', '10A', 92);</pre>
+                        
+                        <h4>c. Display all records:</h4>
+                        <pre>
+<span class="sql-keyword">SELECT</span> * <span class="sql-keyword">FROM</span> students;</pre>
+                        
+                        <h4>d. Update marks:</h4>
+                        <pre>
+<span class="sql-keyword">UPDATE</span> students
+<span class="sql-keyword">SET</span> Marks = 85
+<span class="sql-keyword">WHERE</span> Name = 'Anita';</pre>
+                        
+                        <h4>e. Delete record:</h4>
+                        <pre>
+<span class="sql-keyword">DELETE FROM</span> students
+<span class="sql-keyword">WHERE</span> Id = 3;</pre>
+                    </div>
+                    
+                    <div class="question">
+                        <h3>12. Define the following terms.</h3>
+                        <p>a. Data Dictionary</p>
+                        <p>b. Primary Key</p>
+                        <p>c. Relationship</p>
+                        <p>d. DML</p>
+                        <p>e. SQL</p>
+                        <p>f. Data Integrity</p>
+                        <p>g. DDL</p>
+                        <p>h. Data Security</p>
+                        <p>i. Database System</p>
+                    </div>
+                    <div class="answer">
+                        <p>a. <strong>Data Dictionary:</strong> Stores metadata or information about database structure.</p>
+                        <p>b. <strong>Primary Key:</strong> Unique identifier for records in a table.</p>
+                        <p>c. <strong>Relationship:</strong> Logical association between tables.</p>
+                        <p>d. <strong>DML:</strong> Language to manipulate data in tables (e.g., INSERT, UPDATE).</p>
+                        <p>e. <strong>SQL:</strong> Language for interacting with relational databases.</p>
+                        <p>f. <strong>Data Integrity:</strong> Ensures data is accurate and consistent.</p>
+                        <p>g. <strong>DDL:</strong> Commands used to define or modify database structure (e.g., CREATE, DROP).</p>
+                        <p>h. <strong>Data Security:</strong> Protection of data from unauthorized access.</p>
+                        <p>i. <strong>Database System:</strong> Comprises DBMS software, the database, and the hardware/system environment.</p>
+                    </div>
+                </div>
+                
+                <div class="nav-buttons">
+                    <button id="prevBtn">Previous</button>
+                    <button id="nextBtn">Next</button>
+                </div>
+            </div>
         </div>
-    </footer>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const bookCover = document.getElementById('bookCover');
+            const pages = document.querySelector('.pages');
+            const topics = document.querySelectorAll('.topics-list li');
+            const pageSections = document.querySelectorAll('.page');
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            
+            let currentPage = 0;
+            
+            // Open book cover
+            bookCover.addEventListener('click', function() {
+                bookCover.classList.add('open');
+                pages.style.display = 'flex';
+            });
+            
+            // Topic navigation
+            topics.forEach(topic => {
+                topic.addEventListener('click', function() {
+                    const target = this.getAttribute('data-target');
+                    
+                    // Update active topic
+                    topics.forEach(t => t.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    // Show corresponding page
+                    pageSections.forEach((page, index) => {
+                        if (page.id === target) {
+                            page.classList.add('active');
+                            currentPage = index;
+                        } else {
+                            page.classList.remove('active');
+                        }
+                    });
+                });
+            });
+            
+            // Previous button
+            prevBtn.addEventListener('click', function() {
+                if (currentPage > 0) {
+                    pageSections[currentPage].classList.remove('active');
+                    currentPage--;
+                    pageSections[currentPage].classList.add('active');
+                    
+                    // Update active topic
+                    const targetId = pageSections[currentPage].id;
+                    topics.forEach(topic => {
+                        if (topic.getAttribute('data-target') === targetId) {
+                            topic.classList.add('active');
+                        } else {
+                            topic.classList.remove('active');
+                        }
+                    });
+                }
+            });
+            
+            // Next button
+            nextBtn.addEventListener('click', function() {
+                if (currentPage < pageSections.length - 1) {
+                    pageSections[currentPage].classList.remove('active');
+                    currentPage++;
+                    pageSections[currentPage].classList.add('active');
+                    
+                    // Update active topic
+                    const targetId = pageSections[currentPage].id;
+                    topics.forEach(topic => {
+                        if (topic.getAttribute('data-target') === targetId) {
+                            topic.classList.add('active');
+                        } else {
+                            topic.classList.remove('active');
+                        }
+                    });
+                }
+            });
+        });
+    </script>
 </body>
 </html>
